@@ -1,0 +1,55 @@
+##############################################################################
+# cmake configuration file for @CONFIG_NAME@
+#
+# returns following variables:
+#
+#   @CONFIG_NAME@_FOUND      : set to TRUE if @CONFIG_NAME@ found
+#       if FIND_PACKAGE called with REQUIRED and COMPONENTS arguments
+#       @CONFIG_NAME@_FOUND is only set to TRUE if ALL components are also found
+#       if REQUIRED is NOT set components may or may not be available
+#
+#   @CONFIG_NAME@_VERSION                  : package version
+#   @CONFIG_NAME@::${COMPONENT}            : the @CONFIG_NAME@ component imported library target
+#   @CONFIG_NAME@_${COMPONENT}_FOUND       : set to TRUE or FALSE for each library
+#
+##############################################################################
+
+
+@PACKAGE_INIT@
+
+set( PACKAGE_NAME                @CONFIG_NAME@ )
+set( ${PACKAGE_NAME}_VERSION     @CONFIG_VERSION@ )
+set( ${PACKAGE_NAME}_DIR         "${PACKAGE_PREFIX_DIR}" CACHE STRING "Path to @CONFIG_NAME@ installation" FORCE )
+
+set( ${PACKAGE_NAME}_FOUND )
+
+# Import @CONFIG_NAME@ variables if any
+if( EXISTS ${CMAKE_CURRENT_LIST_DIR}/${PACKAGE_NAME}Variables.cmake )
+	include( ${CMAKE_CURRENT_LIST_DIR}/${PACKAGE_NAME}Variables.cmake )
+endif()
+
+# Import @CONFIG_NAME@ targets in @CONFIG_NAME@:: namespace
+if( EXISTS ${CMAKE_CURRENT_LIST_DIR}/${PACKAGE_NAME}Config-targets.cmake )
+	include( ${CMAKE_CURRENT_LIST_DIR}/${PACKAGE_NAME}Config-targets.cmake )
+endif()
+
+set( ${PACKAGE_NAME}_MISSING_COMPONENTS )
+foreach( comp ${${PACKAGE_NAME}_FIND_COMPONENTS} )
+	if( NOT TARGET ${PACKAGE_NAME}::${comp} )
+		list( APPEND ${PACKAGE_NAME}_MISSING_COMPONENTS ${comp} )
+	else()
+		set( ${PACKAGE_NAME}_${comp}_FOUND TRUE )
+	endif()
+endforeach()
+
+check_required_components( ${PACKAGE_NAME} )
+
+if( NOT ${PACKAGE_NAME}_FIND_QUIET AND ${PACKAGE_NAME}_MISSING_COMPONENTS )
+	if( ${PACKAGE_NAME}_FIND_REQUIRED )
+		message( FATAL_ERROR "@CONFIG_NAME@ not found. Missing components: ${${PACKAGE_NAME}_MISSING_COMPONENTS}" )
+	else()
+		message( WARNING "@CONFIG_NAME@: some components are missing: ${${PACKAGE_NAME}_MISSING_COMPONENTS}" )
+	endif()
+endif()
+
+set( ${PACKAGE_NAME}_FOUND True )

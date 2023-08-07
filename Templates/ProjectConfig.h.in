@@ -1,0 +1,20 @@
+//==========================================================================
+//  @PROJECT_NAME@ project
+//--------------------------------------------------------------------------
+// File auto generated using CMakeTools. Do not edit or be doomed !
+//====================================================================
+
+#ifndef _@PROJECT_NAME@_PROJECT_CONFIG_H_
+#define _@PROJECT_NAME@_PROJECT_CONFIG_H_
+
+// -- std headers
+#include <string_view>
+
+static constexpr uint16_t @PROJECT_NAME@_VERSION_MAJOR = @@PROJECT_NAME@_VERSION_MAJOR@;
+static constexpr uint16_t @PROJECT_NAME@_VERSION_MINOR = @@PROJECT_NAME@_VERSION_MINOR@;
+static constexpr uint16_t @PROJECT_NAME@_VERSION_PATCH = @@PROJECT_NAME@_VERSION_PATCH@;
+static constexpr std::string_view @PROJECT_NAME@_VERSION = "@@PROJECT_NAME@_VERSION@";
+static constexpr std::string_view @PROJECT_NAME@_VERSION_SHORT = "@@PROJECT_NAME@_VERSION_SHORT@";
+static constexpr std::string_view @PROJECT_NAME@_RELEASE_DATE = "@CMAKETOOLS_RELEASE_DATE@";
+
+#endif  // _@PROJECT_NAME@_PROJECT_CONFIG_H_
