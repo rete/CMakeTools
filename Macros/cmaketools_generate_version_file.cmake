@@ -1,0 +1,5 @@
+function( cmaketools_generate_version_file )
+    set( VERSION_FILE Version.txt )
+    file( WRITE ${CMAKE_BINARY_DIR}/${VERSION_FILE} "${${PROJECT_NAME}_VERSION_SHORT}" )
+    install( FILES ${CMAKE_BINARY_DIR}/${VERSION_FILE} DESTINATION . )
+endfunction()

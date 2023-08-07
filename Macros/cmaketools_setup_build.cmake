@@ -1,0 +1,5 @@
+function( cmaketools_setup_build )
+    cmaketools_declare_options()
+    cmaketools_set_cxx_standard()
+    cmaketools_set_compiler_flags()
+endfunction()

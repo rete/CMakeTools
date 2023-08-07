@@ -1,0 +1,23 @@
+function( cmaketools_export_config_variable )
+    cmake_parse_arguments( ARG "PREFIX_PREPEND;APPEND" "VARIABLE" "" ${ARGN} )
+    if( NOT ${ARG_VARIABLE} )
+        return()
+    endif()
+    if( ARG_APPEND )
+        set( APPEND_KEYWORD APPEND )
+    endif()
+    # Append variable to global list
+    get_property( PROJECT_CONFIG_VARS GLOBAL PROPERTY PROJECT_CONFIG_VARS )
+    list( APPEND PROJECT_CONFIG_VARS ${ARG_VARIABLE} )
+    list( REMOVE_DUPLICATES PROJECT_CONFIG_VARS )
+    set_property( GLOBAL PROPERTY PROJECT_CONFIG_VARS ${PROJECT_CONFIG_VARS} )
+    # Set the variable itself
+    set_property( GLOBAL ${APPEND_KEYWORD} PROPERTY CONFIG_EXPORT_${ARG_VARIABLE} ${${ARG_VARIABLE}} )
+    # prepend with install prefix ?
+    if( ARG_PREFIX_PREPEND )
+        get_property( PROJECT_CONFIG_PREFIX_VARS GLOBAL PROPERTY PROJECT_CONFIG_PREFIX_VARS )
+        list( APPEND PROJECT_CONFIG_PREFIX_VARS ${ARG_VARIABLE} )
+        list( REMOVE_DUPLICATES PROJECT_CONFIG_PREFIX_VARS )
+        set_property( GLOBAL PROPERTY PROJECT_CONFIG_PREFIX_VARS ${PROJECT_CONFIG_PREFIX_VARS} )
+    endif()
+endfunction()
